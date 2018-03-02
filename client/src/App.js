@@ -14,14 +14,20 @@ class App extends Component {
         super(props);
         this.state = {
             value: '',
+            chat: '',
             wrong: false,
             watch: 0,
-            stream: false
+            stream: false,
+            chatMsg: []
         };
 
         this.startStream = this.startStream.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.handlePassChange = this.handlePassChange.bind(this);
+        this.handlePassSubmit = this.handlePassSubmit.bind(this);
+
+        this.handleChatChange = this.handleChatChange.bind(this);
+        this.handleChatSubmit = this.handleChatSubmit.bind(this);
 
     }
 
@@ -37,6 +43,15 @@ class App extends Component {
         socket.on('watch', (watch) => {
             this.setState({
                 watch: watch
+            });
+        });
+
+        socket.on('chatMsg', (chatMsg) => {
+            let msgArray = this.state.chatMsg.slice();
+            msgArray.push(chatMsg);
+
+            this.setState({
+                chatMsg: msgArray
             });
         });
 
@@ -58,23 +73,50 @@ class App extends Component {
         });
     }
 
-    handleChange(event) {
+    handlePassChange(event) {
         this.setState({
             value: event.target.value,
             wrong: false
         });
     }
 
-    handleSubmit(event) {
+    handlePassSubmit(event) {
         let password = this.state.value;
         socket.emit( 'start-stream', password );
+        event.preventDefault();
+    }
+
+    handleChatChange(event) {
+        this.setState({
+            chat: event.target.value
+        });
+    }
+
+    handleChatSubmit(event) {
+        let chatText = this.state.chat;
+        socket.emit( 'chatText', chatText );
+        this.setState ({
+            chat: ''
+        });
         event.preventDefault();
     }
 
     handlePassword () {
         if ( this.state.stream ) {
             return (
-                <div id='stream' ref={ canvas => { this.myCanvas = canvas; }} />
+                <div>
+                    <div id='stream' ref={ canvas => { this.myCanvas = canvas; }} />
+                    <ul>
+                      { this.state.chatMsg.map(( msg ) => ( <li key={msg} >{ msg }</li> ))}
+                    </ul>
+                    <form id={'chat'} onSubmit={this.handleChatSubmit}>
+                        <label>
+                            Daisy chat:
+                            <input type={'text'} value={this.state.chat} onChange={this.handleChatChange}/>
+                        </label>
+                            <input className={'btn'} type="submit" value="Send!"/>
+                    </form>
+                </div>
             )
         }
     }
@@ -82,10 +124,10 @@ class App extends Component {
     handleForm () {
         if ( !this.state.stream ) {
             return (
-                <form onSubmit={this.handleSubmit}>
+                <form id={'pass'} onSubmit={this.handlePassSubmit}>
                     <label>
                         Password:
-                        <input type={'password'} value={this.state.value} className={ (this.state.wrong ? 'wrong': '') } onChange={this.handleChange}/>
+                        <input type={'password'} value={this.state.value} className={ (this.state.wrong ? 'wrong': '') } onChange={this.handlePassChange}/>
                     </label>
                     <input className={'btn'} type="submit" value="Watch Now!"/>
                 </form>

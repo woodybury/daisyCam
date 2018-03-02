@@ -18,8 +18,15 @@ app.use('/', express.static(path.join(__dirname, 'rpiImages')));
 let sockets = {};
 
 io.on('connection', (socket) => {
+
     sockets[socket.id] = socket;
+
     io.sockets.emit( 'watch', Object.keys(sockets).length );
+
+    socket.on( 'chatText', ( chatText ) => {
+        console.log ( chatText );
+        io.sockets.emit ( 'chatMsg', chatText );
+    });
 
     socket.on('disconnect', () => {
         delete sockets[socket.id];
