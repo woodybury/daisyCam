@@ -2,7 +2,7 @@
 
 ![ daisy the dog ](https://raw.githubusercontent.com/WoodburyShortridge/daisyCam/master/client/src/imgs/mouse.png)
 
-A Node.js/Socket.io server for Raspberry Pi camera stream with React.js font-end built for Daisy the dog
+A Node.js server for Raspberry Pi camera stream with React.js font-end built for Daisy the dog
 
 ## Need
 

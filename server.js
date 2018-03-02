@@ -13,7 +13,7 @@ const password = 'daisy4life';
 const superSecret = 'wss://webcam.keen-studio.com';
 // const superSecret = 'ws://10.0.0.244:5001'
 
-app.use('/', express.static(path.join(__dirname, 'imgStream')));
+app.use('/', express.static(path.join(__dirname, 'rpiImages')));
 
 let sockets = {};
 
