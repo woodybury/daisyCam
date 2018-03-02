@@ -1,0 +1,40 @@
+{
+  "name": "daisy-cam",
+  "version": "1.0.0",
+  "description": "Node/socket.io server for raspberry pi camera stream with react front-end built for Daisy the dog",
+  "author": {
+    "name": "Woodbury Shortridge",
+    "email": "whshortridge@gmail.com",
+    "url": "https://woodburyshortridge.github.io"
+  },
+  "license": "MIT",
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4",
+    "ws": "^4.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woodburyshortridge/daisyCam.git"
+  },
+  "bugs": {
+    "url": "https://github.com/woodburyshortridge/daisyCam.git/issues"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "socket.io",
+    "raspi",
+    "camera",
+    "stream",
+    "react"
+  ]
+}

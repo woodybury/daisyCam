@@ -1,0 +1,43 @@
+{
+  "name": "daisy-cam-font-end",
+  "version": "0.1.0",
+  "description": "Node/socket.io server for raspberry pi camera stream with react front-end built for Daisy the dog",
+  "author": {
+    "name": "Woodbury Shortridge",
+    "email": "whshortridge@gmail.com",
+    "url": "https://woodburyshortridge.github.io"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "jsmpeg": "^1.0.0",
+    "jsmpeg-player": "^1.1.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.0.17",
+    "socket.io-client": "^2.0.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:5000/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woodburyshortridge/daisyCam.git"
+  },
+  "bugs": {
+    "url": "https://github.com/woodburyshortridge/daisyCam.git/issues"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "socket.io",
+    "raspi",
+    "camera",
+    "stream",
+    "react"
+  ]
+}
