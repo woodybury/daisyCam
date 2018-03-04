@@ -5,13 +5,13 @@ const io = require('socket.io')(http);
 const path = require('path');
 const WebSocket = require('ws');
 const Camera = require('./camera');
+const env = require('./env.json');
 // const camera = new Camera({verbose: true, hflip: false, vflip: false});
 
 const port = process.env.PORT || 5000;
 
-const password = 'daisy4life';
-const superSecret = 'wss://webcam.keen-studio.com';
-// const superSecret = 'ws://10.0.0.244:5001'
+const password = env.password;
+const camSocket = env.camSocket;
 
 app.use('/', express.static(path.join(__dirname, 'rpiImages')));
 
@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
 
     socket.on('start-stream', ( pwd ) => {
         if (pwd === password ) {
-            io.sockets.connected[socket.id].emit('liveStream', superSecret );
+            io.sockets.connected[socket.id].emit('liveStream', camSocket );
         } else {
             io.sockets.connected[socket.id].emit('wrong-password');
         }

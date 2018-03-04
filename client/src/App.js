@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import logo from './imgs/daisy.svg';
 import './App.css';
+import env from './env.json';
 import io from 'socket.io-client';
 import JSMpeg from 'jsmpeg-player';
 
-
-// const socket = io('10.0.0.244:5000');
-const socket = io('localhost:5000');
+const socket = io( env.socketioAddress);
 
 class App extends Component {
 
@@ -33,11 +32,11 @@ class App extends Component {
 
     componentDidMount() {
 
-        socket.on('liveStream', ( streamUrl ) => {
+        socket.on('liveStream', ( camSocket ) => {
             this.setState({
                 stream: true
             });
-            this.startStream( streamUrl );
+            this.startStream( camSocket );
         });
 
         socket.on('watch', (watch) => {
@@ -63,9 +62,9 @@ class App extends Component {
         });
     }
 
-    startStream( streamUrl ) {
+    startStream( camSocket ) {
         console.log (this.myCanvas);
-        new JSMpeg.VideoElement( this.myCanvas, streamUrl, {
+        new JSMpeg.VideoElement( this.myCanvas, camSocket, {
             loop: false,
             audio: false,
             pauseWhenHidden: false,
@@ -106,15 +105,14 @@ class App extends Component {
             return (
                 <div>
                     <div id='stream' ref={ canvas => { this.myCanvas = canvas; }} />
-                    <ul>
-                      { this.state.chatMsg.map(( msg ) => ( <li key={msg} >{ msg }</li> ))}
-                    </ul>
+                    <div id={'chatFrame'}>
+                        <ul>
+                          { this.state.chatMsg.map(( msg ) => ( <li key={msg} >{ msg }</li> ))}
+                        </ul>
+                    </div>
                     <form id={'chat'} onSubmit={this.handleChatSubmit}>
-                        <label>
-                            Daisy chat:
-                            <input type={'text'} value={this.state.chat} onChange={this.handleChatChange}/>
-                        </label>
-                            <input className={'btn'} type="submit" value="Send!"/>
+                            <input id={'chatBox'} aria-label={'chat'} type={'text'} value={this.state.chat} onChange={this.handleChatChange}/>
+                            <input className={'btn'} type="submit" value="Chat!"/>
                     </form>
                 </div>
             )
