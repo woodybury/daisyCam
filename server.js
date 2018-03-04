@@ -24,8 +24,10 @@ io.on('connection', (socket) => {
     io.sockets.emit( 'watch', Object.keys(sockets).length );
 
     socket.on( 'chatText', ( chatText ) => {
-        console.log ( chatText );
-        io.sockets.emit ( 'chatMsg', chatText );
+        io.sockets.emit ( 'chatMsg', {
+            chatText: chatText,
+            id: socket.id
+        } );
     });
 
     socket.on('disconnect', () => {
@@ -35,7 +37,10 @@ io.on('connection', (socket) => {
 
     socket.on('start-stream', ( pwd ) => {
         if (pwd === password ) {
-            io.sockets.connected[socket.id].emit('liveStream', camSocket );
+            io.sockets.connected[socket.id].emit('liveStream', {
+                camSocket: camSocket,
+                id: socket.id
+            } );
         } else {
             io.sockets.connected[socket.id].emit('wrong-password');
         }

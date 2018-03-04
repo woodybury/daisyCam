@@ -17,7 +17,8 @@ class App extends Component {
             wrong: false,
             watch: 0,
             stream: false,
-            chatMsg: []
+            chatMsg: [],
+            id: ''
         };
 
         this.startStream = this.startStream.bind(this);
@@ -32,11 +33,12 @@ class App extends Component {
 
     componentDidMount() {
 
-        socket.on('liveStream', ( camSocket ) => {
+        socket.on('liveStream', ( data ) => {
             this.setState({
-                stream: true
+                stream: true,
+                id: data.id
             });
-            this.startStream( camSocket );
+            this.startStream( data.camSocket );
         });
 
         socket.on('watch', (watch) => {
@@ -45,13 +47,20 @@ class App extends Component {
             });
         });
 
-        socket.on('chatMsg', (chatMsg) => {
+        socket.on('chatMsg', (data) => {
             let msgArray = this.state.chatMsg.slice();
-            msgArray.push(chatMsg);
+            msgArray.push({
+                chatMsg: data.chatText,
+                id: data.id,
+            });
 
             this.setState({
                 chatMsg: msgArray
             });
+
+            let msgBox = this.chatFrame;
+            msgBox.scrollTop = msgBox.scrollHeight;
+
         });
 
         socket.on('wrong-password', () => {
@@ -63,7 +72,6 @@ class App extends Component {
     }
 
     startStream( camSocket ) {
-        console.log (this.myCanvas);
         new JSMpeg.VideoElement( this.myCanvas, camSocket, {
             loop: false,
             audio: false,
@@ -93,9 +101,10 @@ class App extends Component {
 
     handleChatSubmit(event) {
         let chatText = this.state.chat;
+
         socket.emit( 'chatText', chatText );
         this.setState ({
-            chat: ''
+            chat: '',
         });
         event.preventDefault();
     }
@@ -105,9 +114,9 @@ class App extends Component {
             return (
                 <div>
                     <div id='stream' ref={ canvas => { this.myCanvas = canvas; }} />
-                    <div id={'chatFrame'}>
+                    <div id={'chatFrame'} ref={ chatFrame => { this.chatFrame = chatFrame; }}>
                         <ul>
-                          { this.state.chatMsg.map(( msg ) => ( <li key={msg} >{ msg }</li> ))}
+                          { this.state.chatMsg.map(( msg ) => ( <li className={ (this.state.id === msg.id ? 'me' : '' )} key={ Math.random() } >{ msg.chatMsg }</li> ))}
                         </ul>
                     </div>
                     <form id={'chat'} onSubmit={this.handleChatSubmit}>

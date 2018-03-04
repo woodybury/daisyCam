@@ -130,7 +130,7 @@ li {
     color: #FF5959;
     text-align: left;
 }
-li:nth-child(odd) {
+li.me {
     color: #FF87F1;
     text-align: right;
 }
