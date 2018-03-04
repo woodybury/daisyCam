@@ -8,7 +8,7 @@ coverage
 build
 
 # env settings
-env
+env.json
 
 # misc
 .DS_Store
