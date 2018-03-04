@@ -46,6 +46,10 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on("error", (err) => {
+        console.log(err);
+    });
+
 });
 
 const mpegSocket = new WebSocket.Server({ port: 5001 });
@@ -70,10 +74,15 @@ mpegSocket.on('connection', client => {
     }
     client
         .on('close', () => {
+            console.log('WebSocket closed, now:', mpegSocket.clients.size);
             if (0 === mpegSocket.clients.size) {
                 mpegStream.stop();
                 console.log('Close MPEG Stream');
             }
+        });
+    client
+        .on('error', (err) => {
+            console.log (err);
         });
 });
 
