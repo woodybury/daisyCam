@@ -110,7 +110,7 @@ class App extends Component {
     startStream( camSocket ) {
         console.log (window.location.hostname);
 
-        player = new JSMpeg.VideoElement( this.myCanvas, 'ws://' + window.location.hostname + camSocket, {
+        new JSMpeg.VideoElement( this.myCanvas, 'ws://' + window.location.hostname + camSocket, {
             loop: false,
             audio: false,
             pauseWhenHidden: false,
