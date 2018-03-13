@@ -147,6 +147,10 @@ class App extends Component {
         event.preventDefault();
     }
 
+    takePhoto (event) {
+        socket.emit( 'take-photo');
+    }
+
     handlePassword () {
         if ( this.state.stream ) {
             return (
@@ -157,6 +161,7 @@ class App extends Component {
                           { this.state.chatMsg.map(( msg ) => ( <li className={ (this.state.id === msg.id ? 'me' : '' )} key={ Math.random() } >{ msg.chatMsg }</li> ))}
                         </ul>
                     </div>
+                    <button onClick={this.takePhoto}>Take Photo</button>
                     <form id={'chat'} onSubmit={this.handleChatSubmit}>
                             <input id={'chatBox'} aria-label={'chat'} type={'text'} value={this.state.chat} onChange={this.handleChatChange}/>
                             <input className={'btn'} type="submit" value="Chat!"/>

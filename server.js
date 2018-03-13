@@ -7,13 +7,14 @@ const WebSocket = require('ws');
 const Camera = require('./camera');
 const env = require('./env.json');
 const camera = new Camera({verbose: true, hflip: false, vflip: false});
+const spawn = require('child_process').spawn;
 
 const port = process.env.PORT || 5000;
 
 const password = env.password;
 const camSocket = env.camSocket;
 
-// app.use('/', express.static(path.join(__dirname, 'rpiImages')));
+app.use('/', express.static(path.join(__dirname, 'rpiImages')));
 // app.use('/', express.static(path.join(__dirname, 'client/build')));
 
 let sockets = {};
@@ -45,6 +46,13 @@ io.on('connection', (socket) => {
         } else {
             io.sockets.connected[socket.id].emit('wrong-password');
         }
+    });
+
+    socket.on('take-photo', () => {
+        mpegStream.stop();
+        let args = ["-w", "640", "-h", "480", "-o", "./rpiImages/daisy.jpg", "-t", "999999999", "-tl", "100"];
+        spawn('raspistill', args);
+        mpegStream.start();
     });
 
     socket.on("error", (err) => {
