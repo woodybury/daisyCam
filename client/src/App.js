@@ -149,14 +149,6 @@ class App extends Component {
 
     takePhoto (event) {
         socket.emit( 'take-photo');
-        socket.on ('stop-stream', () => {
-            player.destroy();
-            socket.emit ( 'stream-stopped');
-        });
-        socket.on('start-stream', ( data ) => {
-            this.startStream( data.camSocket );
-        });
-
     }
 
     handlePassword () {
