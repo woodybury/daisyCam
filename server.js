@@ -13,7 +13,8 @@ const port = process.env.PORT || 5000;
 const password = env.password;
 const camSocket = env.camSocket;
 
-app.use('/', express.static(path.join(__dirname, 'rpiImages')));
+// app.use('/', express.static(path.join(__dirname, 'rpiImages')));
+// app.use('/', express.static(path.join(__dirname, 'client/build')));
 
 let sockets = {};
 

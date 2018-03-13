@@ -4,8 +4,9 @@ import './App.css';
 import env from './env.json';
 import io from 'socket.io-client';
 import JSMpeg from 'jsmpeg-player';
+import {Linear, Sine, TweenLite, TweenMax} from "gsap";
 
-const socket = io( env.socketioAddress);
+const socket = io(env.socketioAddress);
 
 class App extends Component {
 
@@ -69,6 +70,41 @@ class App extends Component {
                 value: ''
             })
         });
+
+        this.animate(this.container);
+    }
+
+    animate (contain) {
+
+        TweenLite.set(".App", {perspective: 600})
+        TweenLite.set("img", {xPercent: "-50%", yPercent: "-50%"})
+
+        const animm = (elm) => {
+            TweenMax.to(elm, R(6, 15), {y: h + 100, ease: Linear.easeNone, repeat: -1, delay: -15});
+            TweenMax.to(elm, R(4, 8), {x: '+=100', rotationZ: R(0, 180), repeat: -1, yoyo: true, ease: Sine.easeInOut});
+            TweenMax.to(elm, R(2, 8), {
+                rotationX: R(0, 360),
+                rotationY: R(0, 360),
+                repeat: -1,
+                yoyo: true,
+                ease: Sine.easeInOut,
+                delay: -5
+            });
+        };
+
+        const R = (min, max) => {
+            return min + Math.random() * (max - min)
+        };
+
+        let total = 30;
+        let container = contain, w = contain.scrollWidth, h = contain.scrollHeight;
+
+        for (let i = 0; i < total; i++) {
+            let Div = document.createElement('div');
+            TweenLite.set(Div, {attr: {class: 'daisy'}, x: R(0, w), y: R(-200, -150), z: R(-200, 200)});
+            container.appendChild(Div);
+            animm(Div);
+        }
     }
 
     startStream( camSocket ) {
@@ -146,13 +182,15 @@ class App extends Component {
 
     render() {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className={'App-title'}>Daisy Cam</h1>
-                </header>
-                { this.handlePassword() }
-                { this.handleForm() }
+            <div>
+                <div className="App" ref={ container => { this.container = container; }}>
+                    <header className="App-header">
+                        <img src={logo} className="App-logo" alt="logo"/>
+                        <h1 className={'App-title'}>Daisy Cam</h1>
+                    </header>
+                    { this.handlePassword() }
+                    { this.handleForm() }
+                </div>
                 <div className={'counter'}>{ this.state.stream ? this.state.watch : this.state.watch -1 }</div>
             </div>
         );
