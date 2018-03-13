@@ -110,7 +110,7 @@ class App extends Component {
     startStream( camSocket ) {
         console.log (window.location.hostname);
 
-        new JSMpeg.VideoElement( this.myCanvas, 'ws://' + window.location.hostname + camSocket, {
+        player = new JSMpeg.VideoElement( this.myCanvas, 'ws://' + window.location.hostname + camSocket, {
             loop: false,
             audio: false,
             pauseWhenHidden: false,
@@ -149,6 +149,14 @@ class App extends Component {
 
     takePhoto (event) {
         socket.emit( 'take-photo');
+        socket.on ('stop-stream', () => {
+            player.destroy();
+            socket.emit ( 'stream-stopped');
+        });
+        socket.on('start-stream', ( data ) => {
+            this.startStream( data.camSocket );
+        });
+
     }
 
     handlePassword () {

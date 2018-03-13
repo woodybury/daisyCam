@@ -49,10 +49,15 @@ io.on('connection', (socket) => {
     });
 
     socket.on('take-photo', () => {
-        mpegStream.stop();
-        let args = ["-w", "640", "-h", "480", "-o", "./rpiImages/daisy.jpg", "-t", "999999999", "-tl", "100"];
-        spawn('raspistill', args);
-        mpegStream.start();
+        io.sockets.emit('stop-stream');
+        socket.on ('stream-stopped', () => {
+            mpegStream.stop();
+            let args = ["-w", "640", "-h", "480", "-o", "./rpiImages/daisy.jpg", "-t", "999999999", "-tl", "100"];
+            setTimeout(spawn('raspistill', args), 500);
+            setTimeout(mpegStream.start(), 1000);
+            io.sockets.emit('start-stream');
+        });
+
     });
 
     socket.on("error", (err) => {
