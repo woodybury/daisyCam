@@ -76,8 +76,8 @@ class App extends Component {
 
     animate (contain) {
 
-        TweenLite.set(".App", {perspective: 600})
-        TweenLite.set("img", {xPercent: "-50%", yPercent: "-50%"})
+        TweenLite.set(".App", {perspective: 600});
+        TweenLite.set("img", {xPercent: "-50%", yPercent: "-50%"});
 
         const animm = (elm) => {
             TweenMax.to(elm, R(6, 15), {y: h + 100, ease: Linear.easeNone, repeat: -1, delay: -15});

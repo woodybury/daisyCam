@@ -4,10 +4,20 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const path = require('path');
 const WebSocket = require('ws');
-const Camera = require('./camera');
+const os = require('os');
+const tensorflow = require('./tensorflow');
+where = os.type();
+console.log (where);
+let mac = false;
+if (where === 'Darwin') {
+    mac = true;
+}
+if ( ! mac ) {
+    const Camera = require('./camera');
+    const camera = new Camera({verbose: true, hflip: false, vflip: false});
+}
 const env = require('./env.json');
-const camera = new Camera({verbose: true, hflip: false, vflip: false});
-const spawn = require('child_process').spawn;
+spawn = require('child_process').spawn;
 
 const port = process.env.PORT || 5000;
 
@@ -72,19 +82,19 @@ mpegSocket.broadcast = data => {
         });
 };
 
-const mpegStream = camera.stream('mpeg', mpegSocket.broadcast);
+// const mpegStream = camera.stream('mpeg', mpegSocket.broadcast);
 
 mpegSocket.on('connection', client => {
     console.log('WebSocket Connection', mpegSocket.clients.size);
     if (1 === mpegSocket.clients.size) {
-        mpegStream.start();
+        // mpegStream.start();
         console.log('Open MPEG Stream');
     }
     client
         .on('close', () => {
             console.log('WebSocket closed, now:', mpegSocket.clients.size);
             if (0 === mpegSocket.clients.size) {
-                mpegStream.stop();
+                // mpegStream.stop();
                 console.log('Close MPEG Stream');
             }
         });
