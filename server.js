@@ -6,16 +6,18 @@ const path = require('path');
 const WebSocket = require('ws');
 const os = require('os');
 const tensorflow = require('./tensorflow');
+
 where = os.type();
-console.log (where);
 let mac = false;
 if (where === 'Darwin') {
     mac = true;
 }
+
 if ( ! mac ) {
     const Camera = require('./camera');
     const camera = new Camera({verbose: true, hflip: false, vflip: false});
 }
+
 const env = require('./env.json');
 spawn = require('child_process').spawn;
 
@@ -25,7 +27,6 @@ const password = env.password;
 const camSocket = env.camSocket;
 
 app.use('/', express.static(path.join(__dirname, 'rpiImages')));
-// app.use('/', express.static(path.join(__dirname, 'client/build')));
 
 let sockets = {};
 
@@ -59,9 +60,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('take-photo', () => {
-        mpegStream.stop();
-        let args = ["-w", "640", "-h", "480", "-o", "./rpiImages/daisy.jpg" + Math.random(), "-t", "999999999", "-tl", "100"];
-        setTimeout(spawn('raspistill', args), 500);
+        if ( ! mac ) {
+          mpegStream.stop();
+          let args = ["-w", "640", "-h", "480", "-o", "./rpiImages/daisy.jpg" + Math.random(), "-t", "999999999", "-tl", "100"];
+          setTimeout(spawn('raspistill', args), 500);
+        }
     });
 
     socket.on("error", (err) => {
@@ -82,19 +85,25 @@ mpegSocket.broadcast = data => {
         });
 };
 
-// const mpegStream = camera.stream('mpeg', mpegSocket.broadcast);
+if ( ! mac ) {
+  const mpegStream = camera.stream('mpeg', mpegSocket.broadcast);
+}
 
 mpegSocket.on('connection', client => {
     console.log('WebSocket Connection', mpegSocket.clients.size);
     if (1 === mpegSocket.clients.size) {
-        // mpegStream.start();
+        if ( ! mac ) {
+            mpegStream.start();
+        }
         console.log('Open MPEG Stream');
     }
     client
         .on('close', () => {
             console.log('WebSocket closed, now:', mpegSocket.clients.size);
             if (0 === mpegSocket.clients.size) {
-                // mpegStream.stop();
+                if ( ! mac ) {
+                    mpegStream.stop();
+                }
                 console.log('Close MPEG Stream');
             }
         });
