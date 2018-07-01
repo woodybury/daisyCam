@@ -3,7 +3,7 @@ import os
 path =  os.getcwd() + '/daisy_photos/'
 filenames = os.listdir(path)
 
-for x, filename in enumerate(filenames, 1):
+for x, filename in enumerate(filenames, 0):
     print (filename)
-    if filename.startswith('IMG'):
-        os.rename(path + filename, path + 'daisy_0.' + str(x) + '.jpg')
+    if filename.startswith('daisy_'):
+        os.rename(path + filename, path + 'daisy_' + str(200 + x) + '.jpg')
