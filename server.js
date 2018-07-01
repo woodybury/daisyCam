@@ -5,7 +5,7 @@ const io = require('socket.io')(http);
 const path = require('path');
 const WebSocket = require('ws');
 const os = require('os');
-const tensorflow = require('./tensorflow');
+// const tensorflow = require('./tensorflow');
 
 where = os.type();
 let mac = false;
