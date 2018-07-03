@@ -6,7 +6,7 @@ imgs = glob.glob('daisy_photos/*.jpg')
 
 print (imgs)
 
-width = 500
+width = 400
 
 folder = 'daisy_photos/resized'
 if not os.path.exists(folder):

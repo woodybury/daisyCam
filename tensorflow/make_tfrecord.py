@@ -1,15 +1,17 @@
+# see Dat Tran's raccoon detector: https://github.com/datitran/raccoon_dataset
 """
 Usage:
-  # From tensorflow/models/
+  # From tensorflow/models/ see https://github.com/tensorflow/models
   # Create train data:
   python generate_tfrecord.py --csv_input=data/train_labels.csv  --output_path=train.record
 
   # Create test data:
   python generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=test.record
 """
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
+# if python 2
+# from __future__ import division
+# from __future__ import print_function
+# from __future__ import absolute_import
 
 import os
 import io
@@ -21,8 +23,8 @@ from object_detection.utils import dataset_util
 from collections import namedtuple, OrderedDict
 
 flags = tf.app.flags
-flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
-flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
+flags.DEFINE_string('csv_input', 'data/test_labels.csv', 'Path to the CSV input')
+flags.DEFINE_string('output_path', 'data/test.record', 'Path to output TFRecord')
 FLAGS = flags.FLAGS
 
 

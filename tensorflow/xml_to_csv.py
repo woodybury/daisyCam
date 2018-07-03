@@ -1,3 +1,5 @@
+# see Dat Tran's raccoon detector: https://github.com/datitran/raccoon_dataset
+
 import os
 import glob
 import pandas as pd
@@ -28,7 +30,7 @@ def xml_to_csv(path):
 def main():
     image_path = os.path.join(os.getcwd(), 'annotations')
     xml_df = xml_to_csv(image_path)
-    xml_df.to_csv('daisy_labels.csv', index=None)
+    xml_df.to_csv('data/daisy_labels.csv', index=None)
     print('Successfully converted xml to csv.')
 
 
