@@ -4,6 +4,7 @@ import './App.css';
 import env from './env.json';
 import io from 'socket.io-client';
 import JSMpeg from 'jsmpeg-player';
+import ImageZoom from 'react-medium-image-zoom'
 import {Linear, Sine, TweenLite, TweenMax} from "gsap";
 
 const socket = io(env.socketioAddress);
@@ -74,7 +75,12 @@ class App extends Component {
         this.animate(this.container);
     }
 
-    animate (contain) {
+  importAll (r) {
+    return r.keys().map(r);
+  };
+
+
+  animate (contain) {
 
         TweenLite.set(".App", {perspective: 600});
         TweenLite.set("img", {xPercent: "-50%", yPercent: "-50%"});
@@ -96,7 +102,7 @@ class App extends Component {
             return min + Math.random() * (max - min)
         };
 
-        let total = 30;
+        let total = 10;
         let container = contain, w = contain.scrollWidth, h = contain.scrollHeight;
 
         for (let i = 0; i < total; i++) {
@@ -153,6 +159,9 @@ class App extends Component {
 
     handlePassword () {
         if ( this.state.stream ) {
+
+            let images = this.importAll(require.context('../../tensorflow/daisy_detection/capture/daisy', false, /\.(png|jpe?g|svg)$/));
+            let overlayZoomStyle = { overlay: { backgroundImage: 'linear-gradient(-134deg, #FF87F1 0%, #FF5959 100%)', opacity: 0.9 } };
             return (
                 <div>
                     <div id='stream' ref={ canvas => { this.myCanvas = canvas; }} />
@@ -161,11 +170,25 @@ class App extends Component {
                           { this.state.chatMsg.map(( msg ) => ( <li className={ (this.state.id === msg.id ? 'me' : '' )} key={ Math.random() } >{ msg.chatMsg }</li> ))}
                         </ul>
                     </div>
-                    <button onClick={this.takePhoto}>Take Photo</button>
                     <form id={'chat'} onSubmit={this.handleChatSubmit}>
                             <input id={'chatBox'} aria-label={'chat'} type={'text'} value={this.state.chat} onChange={this.handleChatChange}/>
                             <input className={'btn'} type="submit" value="Chat!"/>
                     </form>
+                    <h1>Tensorflow Detection</h1>
+                    <ul className={"aiimgs"}>
+                      { images.map((item) => (
+                        <li key={item}>
+                          <ImageZoom
+                              image={{
+                              src: item,
+                              alt: 'daisy',
+                            }}
+                              defaultStyles={ overlayZoomStyle }
+                            key={item}
+                          />
+                        </li>
+                      ))}
+                    </ul>
                 </div>
             )
         }

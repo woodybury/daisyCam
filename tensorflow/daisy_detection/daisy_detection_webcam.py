@@ -8,10 +8,10 @@ from utils import visualization_utils as vis_util
 MODEL_NAME = 'daisy_model'
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
-PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
+PATH_TO_CKPT = MODEL_NAME + '../training/trained/model.pb/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = MODEL_NAME + '/label_map.py'
+PATH_TO_LABELS = MODEL_NAME + '../training/trained/model.pb/label_map.py'
 
 NUM_CLASSES = 1
 

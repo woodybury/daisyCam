@@ -42,7 +42,7 @@
     background-image: linear-gradient(-134deg, #FF87F1 0%, #FF5959 100%);
     color: white;
     transition: box-shadow, background-image .5s;
-    box-shadow: 1px 1px 20px 2px rgba(0,0,0,0.25);
+    box-shadow: 5px 5px 20px 2px rgba(0,0,0,0.1);
 }
 
 .btn:hover, .btn:focus {
@@ -97,6 +97,7 @@ input[type="password"] {
 
 .static-theme-style__canvas {
     box-shadow: 5px 5px 20px 2px rgba(0,0,0,0.25);
+    z-index: 100;
 }
 
 #stream {
@@ -144,7 +145,7 @@ li.me {
     margin-left: auto;
     justify-content: space-between;
     display: flex;
-    margin-bottom: 3rem;
+    margin-bottom: 6rem;
 }
 
 #chatBox {
@@ -155,6 +156,7 @@ li.me {
     border-radius: 5px;
     margin: 0;
     padding: 0;
+    z-index: 100;
 }
 
 #chat .btn {
@@ -179,6 +181,7 @@ input[type="text"] {
     width: 100%;
     margin-right: auto;
     margin-left: auto;
+    z-index: 100;
 }
 
 .daisy{
@@ -187,4 +190,28 @@ input[type="text"] {
     position:absolute;
     background: url(./imgs/mouse.png);
     background-size: 100% 100%;
+}
+
+.aiimgs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    z-index: 100;
+}
+
+.aiimgs li {
+    flex: 0 0 45%;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .aiimgs li {
+        flex: 0 0 22.5%;
+    }
+}
+
+.aiimgs img {
+    width: 100%;
+    box-shadow: 5px 5px 20px 2px rgba(0,0,0,0.1);
 }
