@@ -14,24 +14,7 @@ const env = require('./env.json');
 const spawn = require('child_process').spawn;
 const util = require("util");
 
-
 let tensorflow, stream = null;
-
-setTimeout(() => {
-  tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
-  util.log('readingin');
-
-  tensorflow.stderr.on('data', (chunk) => {
-    let textChunk = chunk.toString('utf8');
-    util.log(textChunk);
-  });
-
-  tensorflow.stdout.on('data', (chunk) => {
-    let textChunk = chunk.toString('utf8');
-    util.log(textChunk);
-  });
-
-}, 3000);
 
 const port = process.env.PORT || 5000;
 
@@ -47,6 +30,29 @@ io.on('connection', (socket) => {
 
     io.sockets.emit( 'watch', Object.keys(sockets).length );
 
+    if (Object.keys(sockets).length === 1) {
+
+        if (tensorflow !== null) {
+            tensorflow.kill();
+        }
+
+        setTimeout(() => {
+            stream = spawn('node',["stream.js"]);
+            util.log('readingin');
+
+            tensorflow.stderr.on('data', (chunk) => {
+              let textChunk = chunk.toString('utf8');
+              util.log(textChunk);
+            });
+
+            tensorflow.stdout.on('data', (chunk) => {
+              let textChunk = chunk.toString('utf8');
+              util.log(textChunk);
+            });
+
+        }, 1000);
+    }
+
     socket.on( 'chatText', ( chatText ) => {
         io.sockets.emit ( 'chatMsg', {
             chatText: chatText,
@@ -58,7 +64,26 @@ io.on('connection', (socket) => {
         delete sockets[socket.id];
         io.sockets.emit( 'watch', Object.keys(sockets).length );
 
-        stream.kill()
+        if (Object.keys(sockets).length === 0) {
+            stream.kill()
+        }
+
+        setTimeout(() => {
+            tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
+            util.log('readingin');
+
+            tensorflow.stderr.on('data', (chunk) => {
+              let textChunk = chunk.toString('utf8');
+              util.log(textChunk);
+            });
+
+            tensorflow.stdout.on('data', (chunk) => {
+              let textChunk = chunk.toString('utf8');
+              util.log(textChunk);
+            });
+
+        }, 1000);
+
     });
 
     socket.on('start-stream', ( pwd ) => {
@@ -67,24 +92,6 @@ io.on('connection', (socket) => {
                 camSocket: camSocket,
                 id: socket.id
             });
-
-            tensorflow.kill();
-
-            setTimeout(() => {
-                stream = spawn('node',["stream.js"]);
-                util.log('readingin');
-
-                tensorflow.stderr.on('data', (chunk) => {
-                  let textChunk = chunk.toString('utf8');
-                  util.log(textChunk);
-                });
-
-                tensorflow.stdout.on('data', (chunk) => {
-                  let textChunk = chunk.toString('utf8');
-                  util.log(textChunk);
-                });
-
-            }, 3000);
 
         } else {
             io.sockets.connected[socket.id].emit('wrong-password');
