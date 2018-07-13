@@ -14,7 +14,7 @@ const env = require('./env.json');
 const spawn = require('child_process').spawn;
 const util = require("util");
 
-let tensorflow, stream = null;
+let tensorflow = null;
 
 const port = process.env.PORT || 5000;
 
@@ -40,12 +40,12 @@ io.on('connection', (socket) => {
             stream = spawn('node',["stream.js"]);
             util.log('readingin');
 
-            tensorflow.stderr.on('data', (chunk) => {
+            stream.stderr.on('data', (chunk) => {
               let textChunk = chunk.toString('utf8');
               util.log(textChunk);
             });
 
-            tensorflow.stdout.on('data', (chunk) => {
+            stream.stdout.on('data', (chunk) => {
               let textChunk = chunk.toString('utf8');
               util.log(textChunk);
             });
