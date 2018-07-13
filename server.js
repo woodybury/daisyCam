@@ -27,21 +27,21 @@ const util = require("util");
 
 let tensorflow = null;
 
-setTimeout(() => {
-  tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
-  util.log('readingin');
-
-  tensorflow.stderr.on('data', (chunk) => {
-    let textChunk = chunk.toString('utf8');
-    util.log(textChunk);
-  });
-
-  tensorflow.stdout.on('data', (chunk) => {
-    let textChunk = chunk.toString('utf8');
-    util.log(textChunk);
-  });
-
-}, 5000);
+// setTimeout(() => {
+//   tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
+//   util.log('readingin');
+//
+//   tensorflow.stderr.on('data', (chunk) => {
+//     let textChunk = chunk.toString('utf8');
+//     util.log(textChunk);
+//   });
+//
+//   tensorflow.stdout.on('data', (chunk) => {
+//     let textChunk = chunk.toString('utf8');
+//     util.log(textChunk);
+//   });
+//
+// }, 5000);
 
 const port = process.env.PORT || 5000;
 
@@ -146,6 +146,7 @@ mpegSocket.on('connection', client => {
             if (0 === mpegSocket.clients.size) {
                 if ( ! mac ) {
                     mpegStream.stop();
+                    stream = false;
                 }
                 setTimeout(() => {
                     tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);

@@ -1,8 +1,6 @@
 // modified from https://github.com/WebMaestroFr/rpi-mpeg-ts
 const spawn = require("child_process").spawn;
 
-let raspivid;
-
 class Camera {
   constructor(options) {
 
@@ -30,7 +28,7 @@ class Camera {
       });
 
     // Capture
-    raspivid = spawn("raspivid", args, {
+    const raspivid = spawn("raspivid", args, {
       stdio: ["ignore", "pipe", "inherit"]
     });
 
@@ -130,8 +128,6 @@ class Camera {
         Camera
           .source
           .unpipe(avconv.stdin);
-        avconv.kill();
-        raspivid.kill()
       }
     };
     Camera
