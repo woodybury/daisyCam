@@ -54,7 +54,7 @@ def load_labels(label_file):
         label.append(l.rstrip())
     return label
 
-def detection(file_name = "daisy_photos/daisy_test1.jpg"):
+def detection(file_name = "daisy_photos/daisy_test2.jpg"):
     graph = load_graph(model_file)
     t = read_tensor_from_image_file(file_name,
                                     input_height=input_height,
@@ -84,4 +84,4 @@ def detection(file_name = "daisy_photos/daisy_test1.jpg"):
 
     return results[0]
 
-detection("daisy_photos/daisy_test1.jpg")
+detection("daisy_photos/daisy_test2.jpg")

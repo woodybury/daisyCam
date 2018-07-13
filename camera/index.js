@@ -1,8 +1,8 @@
+// modified from https://github.com/WebMaestroFr/rpi-mpeg-ts
 const spawn = require("child_process").spawn;
 
 class Camera {
     constructor(options) {
-
         // Capture options (https://www.raspberrypi.org/documentation/raspbian/applications/camera.md)
         Camera.options = Object.assign({
             nopreview: true,
@@ -13,13 +13,13 @@ class Camera {
             framerate: 30
         }, options || {}, {output: "-"});
 
-        const args = [];
+        Camera.args = [];
         // Command arguments
         Object
             .keys(Camera.options)
             .forEach(opt => {
                 if (Camera.options[opt] || Camera.options[opt] === 0) {
-                    args.push(`--${opt}`);
+                    Camera.args.push(`--${opt}`);
                     if (true !== Camera.options[opt]) {
                         args.push(Camera.options[opt]);
                     }
@@ -27,12 +27,12 @@ class Camera {
             });
 
         // Capture
-        const raspivid = spawn("raspivid", args, {
+        Camera.raspivid = spawn("raspivid", Camera.args, {
             stdio: ["ignore", "pipe", "inherit"]
         });
 
         // H264 stream
-        Camera.source = raspivid.stdout;
+        Camera.source = Camera.raspivid.stdout;
 
         // Converters
         Camera._formats = new Map();
@@ -40,7 +40,7 @@ class Camera {
 
     stream(format, cb) {
 
-        let argsOut;
+        let argsOut, avconv;
         // Output options (https://libav.org/documentation/avconv.html#Options-1)
         switch (format) {
 
@@ -99,7 +99,7 @@ class Camera {
         // Command arguments
         const args = argsIn.concat(argsOut, ["-"]);
         // Converter
-        const avconv = spawn("avconv", args, {
+        avconv = spawn("avconv", args, {
             stdio: ["pipe", "pipe", "inherit"]
         });
         avconv
@@ -118,6 +118,14 @@ class Camera {
         // Controller
         const stream = {
             start() {
+                avconv = spawn("avconv", args, {
+                  stdio: ["pipe", "pipe", "inherit"]
+                });
+                Camera
+                    .raspivid = spawn("raspivid", Camera.args, {
+                  stdio: ["ignore", "pipe", "inherit"]
+                });
+                console.log('start stream');
                 Camera
                     .source
                     .pipe(avconv.stdin);
@@ -127,6 +135,11 @@ class Camera {
                 Camera
                     .source
                     .unpipe(avconv.stdin);
+                // kill to allow cv2 access to camera
+                avconv.kill();
+                Camera
+                    .raspivid.kill();
+                console.log('killed stream')
             }
         };
         Camera
