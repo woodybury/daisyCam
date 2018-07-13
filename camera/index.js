@@ -21,7 +21,7 @@ class Camera {
                 if (Camera.options[opt] || Camera.options[opt] === 0) {
                     Camera.args.push(`--${opt}`);
                     if (true !== Camera.options[opt]) {
-                        args.push(Camera.options[opt]);
+                        Camera.args.push(Camera.options[opt]);
                     }
                 }
             });

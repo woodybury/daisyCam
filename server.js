@@ -12,11 +12,12 @@ if (where === 'Darwin') {
     mac = true;
 }
 
-let camera, mpegStream;
+let camera, mpegStream, stream;
 
 if ( ! mac ) {
     const Camera = require('./camera');
     camera = new Camera({verbose: true, hflip: false, vflip: false});
+    stream = true;
 }
 
 const env = require('./env.json');
@@ -24,7 +25,7 @@ const spawn = require('child_process').spawn;
 const util = require("util");
 
 
-let tensorflow;
+let tensorflow = null;
 
 setTimeout(() => {
   tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
@@ -133,7 +134,9 @@ mpegSocket.on('connection', client => {
                 tensorflow.stdin.pause();
                 tensorflow.kill();
             }
-            setTimeout(() => { mpegStream.start(); }, 5000);
+            if ( stream !== true) {
+                setTimeout(() => { mpegStream.start(); }, 5000);
+            }
         }
         console.log('Open MPEG Stream');
     }
