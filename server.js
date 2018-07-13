@@ -65,25 +65,23 @@ io.on('connection', (socket) => {
         io.sockets.emit( 'watch', Object.keys(sockets).length );
 
         if (Object.keys(sockets).length === 0) {
-            stream.kill()
+            stream.kill();
+            setTimeout(() => {
+                tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
+                util.log('readingin');
+
+                tensorflow.stderr.on('data', (chunk) => {
+                  let textChunk = chunk.toString('utf8');
+                  util.log(textChunk);
+                });
+
+                tensorflow.stdout.on('data', (chunk) => {
+                  let textChunk = chunk.toString('utf8');
+                  util.log(textChunk);
+                });
+
+            }, 1000);
         }
-
-        setTimeout(() => {
-            tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
-            util.log('readingin');
-
-            tensorflow.stderr.on('data', (chunk) => {
-              let textChunk = chunk.toString('utf8');
-              util.log(textChunk);
-            });
-
-            tensorflow.stdout.on('data', (chunk) => {
-              let textChunk = chunk.toString('utf8');
-              util.log(textChunk);
-            });
-
-        }, 1000);
-
     });
 
     socket.on('start-stream', ( pwd ) => {
