@@ -20,7 +20,8 @@ class App extends Component {
             watch: 0,
             stream: false,
             chatMsg: [],
-            id: ''
+            id: '',
+            images: ''
         };
 
         this.startStream = this.startStream.bind(this);
@@ -34,6 +35,10 @@ class App extends Component {
     }
 
     componentDidMount() {
+
+        this.callApi()
+            .then(res => this.setState({ images: res }))
+            .catch(err => console.log(err));
 
         socket.on('liveStream', ( data ) => {
             this.setState({
@@ -74,6 +79,14 @@ class App extends Component {
 
         this.animate(this.container);
     }
+
+  callApi = async () => {
+      let url = 'http://' + window.location.hostname + ':5000/api/images';
+      const response = await fetch(url);
+      const body = await response.json();
+      if (response.status !== 200) throw Error(body.message);
+      return body;
+  };
 
   importAll (r) {
     return r.keys().map(r);
@@ -159,8 +172,7 @@ class App extends Component {
 
     handlePassword () {
         if ( this.state.stream ) {
-
-            let images = this.importAll(require.context('../../tensorflow/daisy_detection/capture/daisy', false, /\.(png|jpe?g|svg)$/));
+            // let images = this.importAll(require.context('../../tensorflow/daisy_detection/capture/daisy', false, /\.(png|jpe?g|svg)$/));
             let overlayZoomStyle = { overlay: { backgroundImage: 'linear-gradient(-134deg, #FF87F1 0%, #FF5959 100%)', opacity: 0.9 } };
             return (
                 <div>
@@ -176,14 +188,14 @@ class App extends Component {
                     </form>
                     <h1>Tensorflow Detection</h1>
                     <ul className={"aiimgs"}>
-                      { images.map((item) => (
+                      { this.state.images.map((item) => (
                         <li key={item}>
                           <ImageZoom
                               image={{
-                              src: item,
+                              src: 'http://' + window.location.hostname + ':5000/images/' + item,
                               alt: 'daisy',
                             }}
-                              defaultStyles={ overlayZoomStyle }
+                            defaultStyles={ overlayZoomStyle }
                             key={item}
                           />
                         </li>
