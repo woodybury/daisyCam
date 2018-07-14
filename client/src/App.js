@@ -21,7 +21,7 @@ class App extends Component {
             stream: false,
             chatMsg: [],
             id: '',
-            images: ''
+            images: '',
         };
 
         this.startStream = this.startStream.bind(this);
@@ -81,7 +81,8 @@ class App extends Component {
     }
 
   callApi = async () => {
-      let url = 'http://' + window.location.hostname + ':5000/api/images';
+      let url = 'http://' + window.location.hostname + '/api/images';
+      console.log (url);
       const response = await fetch(url);
       const body = await response.json();
       if (response.status !== 200) throw Error(body.message);
@@ -192,7 +193,7 @@ class App extends Component {
                         <li key={item}>
                           <ImageZoom
                               image={{
-                              src: 'http://' + window.location.hostname + ':5000/images/' + item,
+                              src: 'http://' + window.location.hostname + 'api/images/files' + item,
                               alt: 'daisy',
                             }}
                             defaultStyles={ overlayZoomStyle }

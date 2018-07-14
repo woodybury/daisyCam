@@ -31,7 +31,7 @@ app.use(function(req, res, next) {
 });
 
 
-app.use('/images', express.static(path.join(__dirname, 'tensorflow/daisy_detection/capture/daisy')));
+app.use('/api/images/files', express.static(path.join(__dirname, 'tensorflow/daisy_detection/capture/daisy')));
 
 app.get('/api/images', (req, res, next) => {
   let images = [];

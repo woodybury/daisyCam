@@ -25,7 +25,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "localhost:5000/",
+  "proxy": "http://localhost:5000/",
   "repository": {
     "type": "git",
     "url": "https://github.com/woodburyshortridge/daisyCam.git"
