@@ -30,6 +30,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use('/api/images/files', express.static(path.join(__dirname, 'tensorflow/daisy_detection/capture/daisy')));
 
@@ -90,8 +91,9 @@ io.on('connection', (socket) => {
         io.sockets.emit( 'watch', Object.keys(sockets).length );
 
         if (Object.keys(sockets).length === 0) {
-            stream.kill();
-            setTimeout(() => {
+            if (!mac) {
+              stream.kill();
+              setTimeout(() => {
                 tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
                 util.log('readingin');
 
@@ -105,7 +107,9 @@ io.on('connection', (socket) => {
                   util.log(textChunk);
                 });
 
-            }, 1000);
+              }, 1000);
+            }
+
         }
     });
 

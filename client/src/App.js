@@ -81,7 +81,7 @@ class App extends Component {
     }
 
   callApi = async () => {
-      let url = 'http://' + window.location.hostname + '/api/images';
+      let url = 'api/images';
       console.log (url);
       const response = await fetch(url);
       const body = await response.json();
@@ -193,7 +193,7 @@ class App extends Component {
                         <li key={item}>
                           <ImageZoom
                               image={{
-                              src: 'http://' + window.location.hostname + 'api/images/files' + item,
+                              src: 'api/images/files/' + item,
                               alt: 'daisy',
                             }}
                             defaultStyles={ overlayZoomStyle }
