@@ -16,17 +16,17 @@ mpegSocket.broadcast = data => {
 
 const mpegStream = camera.stream('mpeg', mpegSocket.broadcast);
 
+mpegStream.start();
+
 mpegSocket.on('connection', client => {
   console.log('WebSocket Connection', mpegSocket.clients.size);
   if (1 === mpegSocket.clients.size) {
-    setTimeout(() => { mpegStream.start(); }, 500);
     console.log('Open MPEG Stream');
   }
   client
     .on('close', () => {
       console.log('WebSocket closed, now:', mpegSocket.clients.size);
       if (0 === mpegSocket.clients.size) {
-        mpegStream.stop();
         console.log('Close MPEG Stream');
       }
     });

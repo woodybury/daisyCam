@@ -24,3 +24,6 @@ yarn-error.log*
 
 # tensorfolow checkpoint coco model
 ssd_mobilenet_v1_coco_2018_01_28/*
+
+# captured photos
+tensorflow/daisy_detection/capture/daisy/*.jpg

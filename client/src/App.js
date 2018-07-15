@@ -5,6 +5,7 @@ import env from './env.json';
 import io from 'socket.io-client';
 import JSMpeg from 'jsmpeg-player';
 import ImageZoom from 'react-medium-image-zoom'
+import Pagination from "react-js-pagination";
 import {Linear, Sine, TweenLite, TweenMax} from "gsap";
 
 const socket = io(env.socketioAddress);
@@ -22,6 +23,7 @@ class App extends Component {
             chatMsg: [],
             id: '',
             images: '',
+            activePage: 1
         };
 
         this.startStream = this.startStream.bind(this);
@@ -37,7 +39,7 @@ class App extends Component {
     componentDidMount() {
 
         this.callApi()
-            .then(res => this.setState({ images: res }))
+            .then(res => this.setState({ images: res.reverse() }))
             .catch(err => console.log(err));
 
         socket.on('liveStream', ( data ) => {
@@ -167,6 +169,11 @@ class App extends Component {
         event.preventDefault();
     }
 
+    handlePageChange(pageNumber) {
+      console.log(`active page is ${pageNumber}`);
+      this.setState({activePage: pageNumber});
+    }
+
     takePhoto (event) {
         socket.emit( 'take-photo');
     }
@@ -189,7 +196,7 @@ class App extends Component {
                     </form>
                     <h1>Tensorflow Detection</h1>
                     <ul className={"aiimgs"}>
-                      { this.state.images.map((item) => (
+                      { this.state.images.slice( (this.state.activePage - 1) * 16, (this.state.activePage - 1) * 16 + 16 ).map((item) => (
                         <li key={item}>
                           <ImageZoom
                               image={{
@@ -202,6 +209,15 @@ class App extends Component {
                         </li>
                       ))}
                     </ul>
+                    <div>
+                      <Pagination
+                        activePage={this.state.activePage}
+                        itemsCountPerPage={16}
+                        totalItemsCount={this.state.images.length}
+                        pageRangeDisplayed={5}
+                        onChange={ this.handlePageChange.bind(this) }
+                      />
+                    </div>
                 </div>
             )
         }
