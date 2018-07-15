@@ -223,7 +223,7 @@ input[type="text"] {
     padding: .5rem .75rem;
     margin-left: -1px;
     line-height: 1.25;
-    color: #FF87F1;
+    color: #ff5959;
     border: 1px solid #dee2e6;
     text-decoration: none;
     background-color: transparent;
@@ -232,8 +232,8 @@ input[type="text"] {
 .pagination .active a {
     z-index: 1;
     color: #fff;
-    background-color: #FF87F1;
-    border-color: #FF87F1;
+    background-color: #ff5959;
+    border-color: #ff5959;
 }
 
 .pagination {

@@ -211,10 +211,11 @@ class App extends Component {
                     </ul>
                     <div>
                       <Pagination
+                        hideDisabled
                         activePage={this.state.activePage}
                         itemsCountPerPage={16}
                         totalItemsCount={this.state.images.length}
-                        pageRangeDisplayed={5}
+                        pageRangeDisplayed={4}
                         onChange={ this.handlePageChange.bind(this) }
                       />
                     </div>
