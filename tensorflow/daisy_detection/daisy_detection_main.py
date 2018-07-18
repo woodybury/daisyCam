@@ -86,17 +86,16 @@ with tf.Session() as sess:
             # compute image diff
             list_of_images = glob.glob('tensorflow/daisy_detection/capture/daisy/*.jpg')
             latest_image = max(list_of_images, key=os.path.getctime)
-            print (latest_image)
-            sys.stdout.flush()
 
             save_image = diff(latest_image, frame)
             if save_image:
                 filename = "tensorflow/daisy_detection/capture/daisy/" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".jpg"
-                print (filename)
+                print ('new image:',filename)
                 sys.stdout.flush()
                 cv2.imwrite(filename, frame)
             else:
                 print ('she has not moved!')
+                sys.stdout.flush()
         else:
             sleep(1)
 
