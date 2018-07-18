@@ -211,7 +211,6 @@ class App extends Component {
                     </ul>
                     <div>
                       <Pagination
-                        hideDisabled
                         activePage={this.state.activePage}
                         itemsCountPerPage={16}
                         totalItemsCount={this.state.images.length}

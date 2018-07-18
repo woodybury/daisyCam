@@ -236,6 +236,14 @@ input[type="text"] {
     border-color: #ff5959;
 }
 
+.pagination .disabled a {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
 .pagination {
     display: flex;
     padding-left: 0;

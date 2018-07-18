@@ -1,6 +1,6 @@
 import cv2
 
-threshold = 125
+threshold = 150
 
 def gray_blur(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
