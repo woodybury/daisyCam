@@ -2,7 +2,11 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from datetime import datetime
+from time import sleep
+from image_diff import diff
 import sys
+import glob
+import os
 
 camera = cv2.VideoCapture(0)
 
@@ -78,10 +82,23 @@ with tf.Session() as sess:
         if score > 0.9:
             print ('daisy found, score: ', score)
             sys.stdout.flush()
-            filename = "tensorflow/daisy_detection/capture/daisy/" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".jpg"
-            print (filename)
+
+            # compute image diff
+            list_of_images = glob.glob('tensorflow/daisy_detection/capture/daisy/*.jpg')
+            latest_image = max(list_of_images, key=os.path.getctime)
+            print (latest_image)
             sys.stdout.flush()
-            cv2.imwrite(filename, frame)
+
+            save_image = diff(latest_image, frame)
+            if save_image:
+                filename = "tensorflow/daisy_detection/capture/daisy/" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".jpg"
+                print (filename)
+                sys.stdout.flush()
+                cv2.imwrite(filename, frame)
+            else:
+                print ('she has not moved!')
+        else:
+            sleep(1)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             sess.close()

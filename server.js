@@ -93,22 +93,23 @@ io.on('connection', (socket) => {
         if (Object.keys(sockets).length === 0) {
             if (!mac) {
               stream.kill();
-              setTimeout(() => {
-                tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
-                util.log('readingin');
-
-                tensorflow.stderr.on('data', (chunk) => {
-                  let textChunk = chunk.toString('utf8');
-                  util.log(textChunk);
-                });
-
-                tensorflow.stdout.on('data', (chunk) => {
-                  let textChunk = chunk.toString('utf8');
-                  util.log(textChunk);
-                });
-
-              }, 1000);
             }
+
+            setTimeout(() => {
+              tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
+              util.log('readingin');
+
+              tensorflow.stderr.on('data', (chunk) => {
+                let textChunk = chunk.toString('utf8');
+                util.log(textChunk);
+              });
+
+              tensorflow.stdout.on('data', (chunk) => {
+                let textChunk = chunk.toString('utf8');
+                util.log(textChunk);
+              });
+
+            }, 1000);
 
         }
     });
