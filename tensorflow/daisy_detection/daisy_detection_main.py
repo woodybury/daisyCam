@@ -1,10 +1,28 @@
+from datetime import datetime
+from time import sleep
+import sys
+
+# put tf detection to sleep when it's dark outside
+hour_now = datetime.now().hour
+min_now = datetime.now().minute
+print ('python spawned at {:d}:{:02d}'.format(hour_now, min_now))
+sys.stdout.flush()
+min_sleep_time = 60 - min_now
+if hour_now > 20:
+    hour_sleep_time = 30 - hour_now
+    print ('it is late, sleeping for ',  hour_sleep_time - 1, ' hours and ', min_sleep_time, 'mins')
+    sys.stdout.flush()
+    sleep((hour_sleep_time - 1)*3600 - min_sleep_time*60)
+elif hour_now < 6:
+    sleep_time = 6 - hour_now
+    print ('it is early, sleeping for ', sleep_time - 1, ' hours and ', min_sleep_time, 'mins')
+    sys.stdout.flush()
+    sleep((sleep_time - 1)*3600 - min_sleep_time*60)
+
 import cv2
 import numpy as np
 import tensorflow as tf
-from datetime import datetime
-from time import sleep
 from image_diff import diff
-import sys
 import glob
 import os
 

@@ -194,7 +194,7 @@ class App extends Component {
                             <input id={'chatBox'} aria-label={'chat'} type={'text'} value={this.state.chat} onChange={this.handleChatChange}/>
                             <input className={'btn'} type="submit" value="Chat!"/>
                     </form>
-                    <h1>Tensorflow Detection</h1>
+                    <h1>Tensorflow Daisy Detection</h1>
                     <ul className={"aiimgs"}>
                       { this.state.images.slice( (this.state.activePage - 1) * 16, (this.state.activePage - 1) * 16 + 16 ).map((item) => (
                         <li key={item}>

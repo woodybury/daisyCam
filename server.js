@@ -62,18 +62,22 @@ io.on('connection', (socket) => {
 
         if (!mac) {
             setTimeout(() => {
-                stream = spawn('node',["stream.js"]);
-                util.log('readingin');
 
-                stream.stderr.on('data', (chunk) => {
-                  let textChunk = chunk.toString('utf8');
-                  util.log(textChunk);
-                });
+                // double check in case of refresh
+                if (Object.keys(sockets).length === 1) {
+                    stream = spawn('node', ["stream.js"]);
+                    util.log('readingin');
 
-                stream.stdout.on('data', (chunk) => {
-                  let textChunk = chunk.toString('utf8');
-                  util.log(textChunk);
-                });
+                    stream.stderr.on('data', (chunk) => {
+                      let textChunk = chunk.toString('utf8');
+                      util.log(textChunk);
+                    });
+
+                    stream.stdout.on('data', (chunk) => {
+                      let textChunk = chunk.toString('utf8');
+                      util.log(textChunk);
+                    });
+                }
 
             }, 1000);
         }
@@ -96,18 +100,21 @@ io.on('connection', (socket) => {
             }
 
             setTimeout(() => {
-              tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
-              util.log('readingin');
+              // double check in case of refresh
+              if (Object.keys(sockets).length === 0) {
+                tensorflow = spawn('python3',["tensorflow/daisy_detection/daisy_detection_main.py"]);
+                util.log('readingin');
 
-              tensorflow.stderr.on('data', (chunk) => {
-                let textChunk = chunk.toString('utf8');
-                util.log(textChunk);
-              });
+                tensorflow.stderr.on('data', (chunk) => {
+                  let textChunk = chunk.toString('utf8');
+                  util.log(textChunk);
+                });
 
-              tensorflow.stdout.on('data', (chunk) => {
-                let textChunk = chunk.toString('utf8');
-                util.log(textChunk);
-              });
+                tensorflow.stdout.on('data', (chunk) => {
+                  let textChunk = chunk.toString('utf8');
+                  util.log(textChunk);
+                });
+              }
 
             }, 1000);
 
