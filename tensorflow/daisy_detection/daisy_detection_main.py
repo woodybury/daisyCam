@@ -6,7 +6,7 @@ import sys
 def check_time():
     hour_now = datetime.now().hour
     min_now = datetime.now().minute
-    print ('python spawned at {:d}:{:02d}'.format(hour_now, min_now))
+    print ('python at {:d}:{:02d}'.format(hour_now, min_now))
     sys.stdout.flush()
     min_sleep_time = 60 - min_now
     if hour_now > 20:
@@ -65,14 +65,14 @@ def load_graph(model_file):
 with tf.Session() as sess:
     graph = load_graph(model_file)
 
-    i = 0
+    c = 0
     while True:
 
         # put tf detection to sleep when it's dark outside
         # check every min
-        if i % 60 == 0:
+        c += 1
+        if c % 60 == 0:
             check_time()
-        i += 1
 
         frame = grabVideoFeed()
 
