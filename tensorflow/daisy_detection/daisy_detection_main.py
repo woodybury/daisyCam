@@ -72,6 +72,7 @@ with tf.Session() as sess:
         # check every min
         if i % 60 == 0:
             check_time()
+        i += 1
 
         frame = grabVideoFeed()
 
