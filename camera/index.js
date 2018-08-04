@@ -11,7 +11,9 @@ class Camera {
       timeout: 0,
       width: 640,
       height: 480,
-      framerate: 30
+      framerate: 30,
+      exposure:'backlight',
+      metering: 'backlit'
     }, options || {}, {output: "-"});
 
     const args = [];
