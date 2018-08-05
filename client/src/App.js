@@ -97,8 +97,19 @@ class App extends Component {
         TweenLite.set(".daisy", {xPercent: "-50%", yPercent: "-50%"});
 
         const animm = (elm) => {
-            TweenMax.to(elm, R(6, 15), {y: h + 100, ease: Linear.easeInOut, repeat: -1, delay: -15});
-            TweenMax.to(elm, R(4, 8), {x: '+=100', rotationZ: R(0, 180), repeat: -1, yoyo: true, ease: Sine.easeInOut});
+            TweenMax.to(elm, R(6, 15), {
+                y: h,
+                ease: Linear.easeInOut,
+                repeat: -1,
+                delay: -15
+            });
+            TweenMax.to(elm, R(4, 8), {
+                x: '+=100',
+                rotationZ: R(0, 180),
+                repeat: -1,
+                yoyo: true,
+                ease: Sine.easeInOut
+            });
             TweenMax.to(elm, R(2, 8), {
                 rotationX: R(0, 360),
                 rotationY: R(0, 360),
@@ -113,14 +124,14 @@ class App extends Component {
             return min + Math.random() * (max - min)
         };
 
-        let total = 4;
-        let container = contain, w = contain.scrollWidth, h = contain.scrollHeight;
+        let total = 6;
+        let w = contain.scrollWidth, h = contain.scrollHeight;
 
         for (let i = 0; i < total; i++) {
             let Div = document.createElement('div');
             let daisyClass = 'daisy daisy_'+ i;
-            TweenLite.set(Div, {attr: {class: daisyClass }, x: R(0, w), y: R(-200, -150), z: R(-200, 200)});
-            container.appendChild(Div);
+            TweenLite.set(Div, {attr: {class: daisyClass }, x: R(0, w), y: R(-500, -400), z: R(-200, 200)});
+            contain.appendChild(Div);
             animm(Div);
         }
     }
