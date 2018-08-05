@@ -1,6 +1,5 @@
 # Daisy Cam
-
-![ daisy the dog ](https://github.com/WoodburyShortridge/daisyCam/blob/master/client/src/imgs/daisyface.png?raw=true)
+<img src="https://github.com/WoodburyShortridge/daisyCam/blob/master/client/src/imgs/daisyface.png?raw=true" width="200"/>
 
 A Node.js server for Raspberry Pi camera stream with React.js font-end built for Daisy the dog.
 
