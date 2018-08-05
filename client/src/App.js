@@ -6,6 +6,7 @@ import io from 'socket.io-client';
 import JSMpeg from 'jsmpeg-player';
 import ImageZoom from 'react-medium-image-zoom'
 import Pagination from "react-js-pagination";
+import ReactTooltip from 'react-tooltip'
 import {Linear, Sine, TweenLite, TweenMax} from "gsap";
 
 const socket = io(env.socketioAddress);
@@ -110,7 +111,7 @@ class App extends Component {
                 repeat: -1,
                 yoyo: true,
                 ease: Sine.easeInOut,
-                delay: -5
+                delay: -5,
             });
         };
 
@@ -118,7 +119,7 @@ class App extends Component {
             return min + Math.random() * (max - min)
         };
 
-        let total = 10;
+        let total = 5;
         let container = contain, w = contain.scrollWidth, h = contain.scrollHeight;
 
         for (let i = 0; i < total; i++) {
@@ -133,7 +134,9 @@ class App extends Component {
         console.log (window.location.hostname);
 
         new JSMpeg.VideoElement( this.myCanvas, 'ws://' + window.location.hostname + camSocket, {
-            loop: false,
+        // for local dev
+        // new JSMpeg.VideoElement( this.myCanvas, 'ws://' + 'home.d4isy.com:' + camSocket, {
+        loop: false,
             audio: false,
             pauseWhenHidden: false,
             aspectPercent: '65%'
@@ -184,31 +187,33 @@ class App extends Component {
             let overlayZoomStyle = { overlay: { backgroundImage: 'linear-gradient(-134deg, #FF87F1 0%, #FF5959 100%)', opacity: 0.9 } };
             return (
                 <div>
-                    <div id='stream' ref={ canvas => { this.myCanvas = canvas; }} />
-                    <div id={'chatFrame'} ref={ chatFrame => { this.chatFrame = chatFrame; }}>
-                        <ul>
-                          { this.state.chatMsg.map(( msg ) => ( <li className={ (this.state.id === msg.id ? 'me' : '' )} key={ Math.random() } >{ msg.chatMsg }</li> ))}
-                        </ul>
+                  <div className="container">
+                      <div id='stream' ref={ canvas => { this.myCanvas = canvas; }} />
+                      <div id={'chatFrame'} ref={ chatFrame => { this.chatFrame = chatFrame; }}>
+                          <ul>
+                            { this.state.chatMsg.map(( msg ) => ( <li className={ (this.state.id === msg.id ? 'me' : '' )} key={ Math.random() } >{ msg.chatMsg }</li> ))}
+                          </ul>
+                      </div>
+                      <form id={'chat'} onSubmit={this.handleChatSubmit}>
+                              <input id={'chatBox'} aria-label={'chat'} type={'text'} value={this.state.chat} onChange={this.handleChatChange}/>
+                              <input className={'btn'} type="submit" value="Chat!"/>
+                      </form>
+                      <h1>tensorflow d<span role="img" aria-label="dog face">🐶</span>isy detection</h1>
+                      <ul className={"aiimgs"}>
+                        { this.state.images.slice( (this.state.activePage - 1) * 16, (this.state.activePage - 1) * 16 + 16 ).map((item) => (
+                          <li key={item}>
+                            <ImageZoom
+                                image={{
+                                src: 'api/images/files/' + item,
+                                alt: 'daisy',
+                              }}
+                              defaultStyles={ overlayZoomStyle }
+                              key={item}
+                            />
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <form id={'chat'} onSubmit={this.handleChatSubmit}>
-                            <input id={'chatBox'} aria-label={'chat'} type={'text'} value={this.state.chat} onChange={this.handleChatChange}/>
-                            <input className={'btn'} type="submit" value="Chat!"/>
-                    </form>
-                    <h1>Tensorflow Daisy Detection</h1>
-                    <ul className={"aiimgs"}>
-                      { this.state.images.slice( (this.state.activePage - 1) * 16, (this.state.activePage - 1) * 16 + 16 ).map((item) => (
-                        <li key={item}>
-                          <ImageZoom
-                              image={{
-                              src: 'api/images/files/' + item,
-                              alt: 'daisy',
-                            }}
-                            defaultStyles={ overlayZoomStyle }
-                            key={item}
-                          />
-                        </li>
-                      ))}
-                    </ul>
                     <div>
                       <Pagination
                         activePage={this.state.activePage}
@@ -228,10 +233,10 @@ class App extends Component {
             return (
                 <form id={'pass'} onSubmit={this.handlePassSubmit}>
                     <label>
-                        Password:
+                        password:
                         <input type={'password'} value={this.state.value} className={ (this.state.wrong ? 'wrong': '') } onChange={this.handlePassChange}/>
                     </label>
-                    <input className={'btn'} type="submit" value="Watch Now!"/>
+                    <input className={'btn'} type="submit" value="watch now!"/>
                 </form>
             )
         }
@@ -243,12 +248,13 @@ class App extends Component {
                 <div className="App" ref={ container => { this.container = container; }}>
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo"/>
-                        <h1 className={'App-title'}>Daisy Cam</h1>
+                        <h1 className={'App-title'}>d<span role="img" aria-label="dog face">🐶</span>isy cam</h1>
                     </header>
                     { this.handlePassword() }
                     { this.handleForm() }
                 </div>
-                <div className={'counter'}>{ this.state.stream ? this.state.watch : this.state.watch -1 }</div>
+                <div className="counter" data-tip={ this.state.stream ? this.state.watch + " friends watching daisy 😍": this.state.watch -1 + " friends watching daisy 😍"}>{ this.state.stream ? this.state.watch : this.state.watch -1 }</div>
+                <ReactTooltip place="left" type="dark" effect="float"/>
             </div>
         );
     }

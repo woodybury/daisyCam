@@ -1,6 +1,9 @@
 .App {
     text-align: center;
-    width:100%; height:100%;
+    width:100vw; height:100%;
+    overflow: hidden;
+    min-height: 100vh;
+    padding-bottom: 2rem;
 }
 
 .App-logo {
@@ -13,7 +16,7 @@
     height: 12rem;
     padding: 2rem;
     color: white;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
 .App-title {
@@ -42,11 +45,11 @@
     background-image: linear-gradient(-134deg, #FF87F1 0%, #FF5959 100%);
     color: white;
     transition: box-shadow, background-image .5s;
-    box-shadow: 5px 5px 20px 2px rgba(0,0,0,0.1);
+    box-shadow: none;
 }
 
 .btn:hover, .btn:focus {
-    box-shadow: 5px 5px 20px 2px rgba(0,0,0,0.25);
+    box-shadow: 7px 7px 7px rgba(0,0,0,.2);
     background-image: linear-gradient(-134deg, #FF87F1 0%, #FF5959 90%);
 }
 
@@ -103,7 +106,7 @@ input[type="password"] {
 #stream {
     margin-left: auto;
     margin-right: auto;
-    max-width: 640px;
+    max-width: 800px;
 }
 
 .counter {
@@ -139,7 +142,7 @@ li.me {
 }
 
 #chat {
-    max-width: 640px;
+    max-width: 800px;
     width: 100%;
     margin-right: auto;
     margin-left: auto;
@@ -185,11 +188,22 @@ input[type="text"] {
 }
 
 .daisy{
-    width:5rem;
-    height:5rem;
+    width:10rem;
+    height:10rem;
     position:absolute;
-    background: url(./imgs/mouse.png);
+    background: url(./imgs/daisyface.svg);
     background-size: 100% 100%;
+    animation: daisy-fade 1s;
+    z-index: 0;
+}
+
+@keyframes daisy-fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .aiimgs {
@@ -250,4 +264,12 @@ input[type="text"] {
     list-style: none;
     border-radius: .25rem;
     justify-content: center;
+}
+
+.container {
+    padding: 0px 15px;
+}
+
+.__react_component_tooltip {
+    font-size: 1rem !important;
 }
