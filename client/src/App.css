@@ -187,14 +187,32 @@ input[type="text"] {
     z-index: 100;
 }
 
-.daisy{
+.daisy {
     width:10rem;
     height:10rem;
     position:absolute;
-    background: url(./imgs/daisyface.svg);
-    background-size: 100% 100%;
     animation: daisy-fade 1s;
     z-index: 0;
+}
+
+.daisy_0 {
+    background: url(./imgs/daisyface_0.svg);
+    background-size: 100% 100%;
+}
+
+.daisy_1 {
+    background: url(./imgs/daisyface_1.svg);
+    background-size: 100% 100%;
+}
+
+.daisy_2 {
+    background: url(./imgs/daisyface_2.svg);
+    background-size: 100% 100%;
+}
+
+.daisy_3 {
+    background-size: 100% 100%;
+    background: url(./imgs/daisyface_3.svg);
 }
 
 @keyframes daisy-fade {

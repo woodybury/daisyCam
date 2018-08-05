@@ -23,7 +23,7 @@ class App extends Component {
             stream: false,
             chatMsg: [],
             id: '',
-            images: '',
+            images: null,
             activePage: 1
         };
 
@@ -80,30 +80,24 @@ class App extends Component {
             })
         });
 
-        this.animate(this.container);
+      window.addEventListener('DOMContentLoaded', this.animate(this.container));
     }
 
   callApi = async () => {
       let url = 'api/images';
-      console.log (url);
       const response = await fetch(url);
       const body = await response.json();
       if (response.status !== 200) throw Error(body.message);
       return body;
   };
 
-  importAll (r) {
-    return r.keys().map(r);
-  };
-
-
   animate (contain) {
 
-        TweenLite.set(".App", {perspective: 600});
-        TweenLite.set("img", {xPercent: "-50%", yPercent: "-50%"});
+        TweenLite.set(".App", {perspective: 500});
+        TweenLite.set(".daisy", {xPercent: "-50%", yPercent: "-50%"});
 
         const animm = (elm) => {
-            TweenMax.to(elm, R(6, 15), {y: h + 100, ease: Linear.easeNone, repeat: -1, delay: -15});
+            TweenMax.to(elm, R(6, 15), {y: h + 100, ease: Linear.easeInOut, repeat: -1, delay: -15});
             TweenMax.to(elm, R(4, 8), {x: '+=100', rotationZ: R(0, 180), repeat: -1, yoyo: true, ease: Sine.easeInOut});
             TweenMax.to(elm, R(2, 8), {
                 rotationX: R(0, 360),
@@ -119,20 +113,19 @@ class App extends Component {
             return min + Math.random() * (max - min)
         };
 
-        let total = 5;
+        let total = 4;
         let container = contain, w = contain.scrollWidth, h = contain.scrollHeight;
 
         for (let i = 0; i < total; i++) {
             let Div = document.createElement('div');
-            TweenLite.set(Div, {attr: {class: 'daisy'}, x: R(0, w), y: R(-200, -150), z: R(-200, 200)});
+            let daisyClass = 'daisy daisy_'+ i;
+            TweenLite.set(Div, {attr: {class: daisyClass }, x: R(0, w), y: R(-200, -150), z: R(-200, 200)});
             container.appendChild(Div);
             animm(Div);
         }
     }
 
     startStream( camSocket ) {
-        console.log (window.location.hostname);
-
         new JSMpeg.VideoElement( this.myCanvas, 'ws://' + window.location.hostname + camSocket, {
         // for local dev
         // new JSMpeg.VideoElement( this.myCanvas, 'ws://' + 'home.d4isy.com:' + camSocket, {
@@ -182,12 +175,10 @@ class App extends Component {
     }
 
     handlePassword () {
-        if ( this.state.stream ) {
-            // let images = this.importAll(require.context('../../tensorflow/daisy_detection/capture/daisy', false, /\.(png|jpe?g|svg)$/));
+        if ( this.state.stream && this.state.images !== null) {
             let overlayZoomStyle = { overlay: { backgroundImage: 'linear-gradient(-134deg, #FF87F1 0%, #FF5959 100%)', opacity: 0.9 } };
             return (
-                <div>
-                  <div className="container">
+              <div className="container">
                       <div id='stream' ref={ canvas => { this.myCanvas = canvas; }} />
                       <div id={'chatFrame'} ref={ chatFrame => { this.chatFrame = chatFrame; }}>
                           <ul>
@@ -213,8 +204,6 @@ class App extends Component {
                           </li>
                         ))}
                       </ul>
-                    </div>
-                    <div>
                       <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={16}
@@ -222,7 +211,6 @@ class App extends Component {
                         pageRangeDisplayed={4}
                         onChange={ this.handlePageChange.bind(this) }
                       />
-                    </div>
                 </div>
             )
         }
@@ -244,7 +232,7 @@ class App extends Component {
 
     render() {
         return (
-            <div>
+            <div className="Main-wrapper">
                 <div className="App" ref={ container => { this.container = container; }}>
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo"/>
