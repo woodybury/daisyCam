@@ -5,13 +5,22 @@ A Node.js server for Raspberry Pi camera stream with React.js font-end built for
 
 Including a tensorflow classifier for daisy detection from raspi camera. See `/tensorflow`
 
+Tensorflow made Daisy gallery and @todo email notifications for daisy detection
+
 ## Need
 
 Node.js &
 npm &
-yarn
+yarn &
+python &
+tensorflow &
+opencv
 
 ## Use
+
+```
+cp example.env.json env.json && cp example.mailList.json mailList.json && cp client/src/example.env.json client/src/env.json
+```
 
 ```
 npm i nodemon -g
@@ -41,12 +50,4 @@ To build client production
 ```
 cd client
 yarn build
-```
-
-To serve client production
-
-```
-yarn global add serve
-cd client
-serve -s build
 ```

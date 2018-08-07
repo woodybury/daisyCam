@@ -5,16 +5,16 @@ const io = require('socket.io')(http);
 const os = require('os');
 const fs = require('fs');
 const path = require("path");
+const env = require('./env.json');
+const spawn = require('child_process').spawn;
+const util = require("util");
 
+// for dev on mac
 where = os.type();
 let mac = false;
 if (where === 'Darwin') {
     mac = true;
 }
-
-const env = require('./env.json');
-const spawn = require('child_process').spawn;
-const util = require("util");
 
 let tensorflow = null;
 let stream = null;

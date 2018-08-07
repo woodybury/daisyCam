@@ -17,6 +17,7 @@ env.json
 .env.test.local
 .env.production.local
 .idea
+mailList.json
 
 npm-debug.log*
 yarn-debug.log*
