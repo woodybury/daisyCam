@@ -24,7 +24,8 @@ class App extends Component {
             chatMsg: [],
             id: '',
             images: null,
-            activePage: 1
+            activePage: 1,
+            submit: false
         };
 
         this.startStream = this.startStream.bind(this);
@@ -110,6 +111,7 @@ class App extends Component {
       }
     });
     console.log(sendEmail);
+    this.setState({ submit: true})
   };
 
   animate (contain) {
@@ -246,20 +248,34 @@ class App extends Component {
                       />
               </div>
                 <div className="email-wrapper">
-                  <form onSubmit={this.handleSubmit}>
-                    <label htmlFor="username">name
-                      <input id="username" name="username" type="text" />
-                    </label>
-                    <label htmlFor="email">email
-                      <input id="email" name="email" type="email" />
-                    </label>
-                    <input className={'btn'} type="submit" value="get alerts!"/>
-                  </form>
+                  { this.handleSignUp() }
                 </div>
               </div>
 
             )
         }
+    }
+
+    handleSignUp () {
+      if ( !this.state.submit ) {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            <label htmlFor="username">name
+              <input id="username" name="username" type="text" />
+            </label>
+            <label htmlFor="email">email
+              <input id="email" name="email" type="email" />
+            </label>
+            <input className={'btn'} type="submit" value="get alerts!"/>
+          </form>
+        )
+      } else {
+        return (
+          <div className="thanks">
+            <h1>😜 👻 🤖 👅 thanks 🐶 🦄 🐾 🧀</h1>
+          </div>
+        )
+      }
     }
 
     handleForm () {
