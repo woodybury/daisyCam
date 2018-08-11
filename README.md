@@ -19,7 +19,7 @@ opencv
 ## Use
 
 ```
-cp example.env.json env.json && cp example.mailList.json mailList.json && cp client/src/example.env.json client/src/env.json
+cp example.env.json env.json && cp example.mail-list.json mail-list.json && cp client/src/example.env.json client/src/env.json
 ```
 
 ```

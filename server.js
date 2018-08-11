@@ -8,6 +8,7 @@ const path = require("path");
 const env = require('./env.json');
 const spawn = require('child_process').spawn;
 const util = require("util");
+const email = require("./email.js");
 
 // for dev on mac
 where = os.type();
@@ -141,6 +142,13 @@ io.on('connection', (socket) => {
         console.log(err);
     });
 
+});
+
+fs.watch('tensorflow/daisy_detection/capture/daisy', (eventType, filename) => {
+  console.log(eventType);
+  if (eventType === 'rename') {
+    email.sendMail(filename);
+  }
 });
 
 http.listen(port, () => console.log(`Listening on port ${port}`));

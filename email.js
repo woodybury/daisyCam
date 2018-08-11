@@ -10,8 +10,8 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-sendMail = () => {
-  fs.readFile('mailList.json', 'utf8', function readFileCallback(err, data){
+module.exports.sendMail = (image) => {
+  fs.readFile('mail-list.json', 'utf8', function readFileCallback(err, data){
     if (err){
       console.log(err);
     } else {
@@ -20,13 +20,13 @@ sendMail = () => {
       for (let key in obj) {
         emails.push(obj[key]);
       }
-      // emails = emails.toString();
       for (let i = 0; i < emails.length; i++) {
+        let text = 'Hi ' + Object.keys(obj)[i] +', check out the doobin!';
         let mailOptions = {
           from: env.emailAddress,
           to: emails[i],
           subject: 'Daisy is LIVE 🐶',
-          text: 'Hi ' + Object.keys(obj)[i] +', check out the doobin!'
+          html: "<p>" + text + "<br><a href='http://d4isy.com'>D4isy.com</a><br><img src='http://d4isy.com/api/images/files/" + image +"'>"
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -41,15 +41,15 @@ sendMail = () => {
   });
 };
 
-addEmail = (name,email) => {
-  fs.readFile('mailList.json', 'utf8', function readFileCallback(err, data){
+module.exports.addEmail = (name,email) => {
+  fs.readFile('mail-list.json', 'utf8', function readFileCallback(err, data){
     if (err){
       console.log(err);
     } else {
       let obj = JSON.parse(data);
       obj[name] = email;
       let json = JSON.stringify(obj);
-      fs.writeFile('mailList.json', json, 'utf8', function writeFileCallback(err){
+      fs.writeFile('mail-list.json', json, 'utf8', function writeFileCallback(err){
         if (err){
           console.log(err);
         }}
