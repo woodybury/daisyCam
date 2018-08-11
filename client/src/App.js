@@ -35,6 +35,8 @@ class App extends Component {
         this.handleChatChange = this.handleChatChange.bind(this);
         this.handleChatSubmit = this.handleChatSubmit.bind(this);
 
+        this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     componentDidMount() {
@@ -89,6 +91,25 @@ class App extends Component {
       const body = await response.json();
       if (response.status !== 200) throw Error(body.message);
       return body;
+  };
+
+  handleSubmit = async (event) => {
+    event.preventDefault();
+    let data = new FormData(event.target);
+    let body = JSON.stringify({
+      username: data.get('username'),
+      email: data.get('email'),
+    });
+
+    const sendEmail = await fetch('/sign-up', {
+      method: 'POST',
+      body: body,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log(sendEmail);
   };
 
   animate (contain) {
@@ -189,6 +210,7 @@ class App extends Component {
         if ( this.state.stream && this.state.images !== null) {
             let overlayZoomStyle = { overlay: { backgroundImage: 'linear-gradient(-134deg, #FF87F1 0%, #FF5959 100%)', opacity: 0.9 } };
             return (
+              <div className="main">
               <div className="container">
                       <div id='stream' ref={ canvas => { this.myCanvas = canvas; }} />
                       <div id={'chatFrame'} ref={ chatFrame => { this.chatFrame = chatFrame; }}>
@@ -222,7 +244,20 @@ class App extends Component {
                         pageRangeDisplayed={4}
                         onChange={ this.handlePageChange.bind(this) }
                       />
+              </div>
+                <div className="email-wrapper">
+                  <form onSubmit={this.handleSubmit}>
+                    <label htmlFor="username">name
+                      <input id="username" name="username" type="text" />
+                    </label>
+                    <label htmlFor="email">email
+                      <input id="email" name="email" type="email" />
+                    </label>
+                    <input className={'btn'} type="submit" value="get alerts!"/>
+                  </form>
                 </div>
+              </div>
+
             )
         }
     }

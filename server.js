@@ -9,6 +9,7 @@ const env = require('./env.json');
 const spawn = require('child_process').spawn;
 const util = require("util");
 const email = require("./email.js");
+const bodyParser = require("body-parser");
 
 // for dev on mac
 where = os.type();
@@ -149,6 +150,18 @@ fs.watch('tensorflow/daisy_detection/capture/daisy', (eventType, filename) => {
   if (eventType === 'rename') {
     email.sendMail(filename);
   }
+});
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.use(bodyParser.json());
+
+app.post("/sign-up", function (req, res, next) {
+  console.log(req.body.username);
+  email.addEmail(req.body.username, req.body.email);
+  next();
 });
 
 http.listen(port, () => console.log(`Listening on port ${port}`));

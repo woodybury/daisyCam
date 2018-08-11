@@ -57,7 +57,3 @@ module.exports.addEmail = (name,email) => {
     }
   });
 };
-
-// addEmail('Cecily','cecily.m.parker@gmail.com');
-// addEmail('Carter','carter.m.parker@gmail.com');
-// sendMail();
