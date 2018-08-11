@@ -20,22 +20,23 @@ sendMail = () => {
       for (let key in obj) {
         emails.push(obj[key]);
       }
-      emails = emails.toString();
+      // emails = emails.toString();
+      for (let i = 0; i < emails.length; i++) {
+        let mailOptions = {
+          from: env.emailAddress,
+          to: emails[i],
+          subject: 'Daisy is LIVE 🐶',
+          text: 'Hi ' + Object.keys(obj)[i] +', check out the doobin!'
+        };
 
-      let mailOptions = {
-        from: env.emailAddress,
-        to: emails,
-        subject: 'Sending Email using Node.js',
-        text: 'That was easy!'
-      };
-
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log(`Email sent: ${info.response}`);
-        }
-      });
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(`Email sent: ${info.response}`);
+          }
+        });
+      }
     }
   });
 };
@@ -57,5 +58,6 @@ addEmail = (name,email) => {
   });
 };
 
-addEmail('woody','whshortridge@gmail.com');
-sendMail();
+// addEmail('Cecily','cecily.m.parker@gmail.com');
+// addEmail('Carter','carter.m.parker@gmail.com');
+// sendMail();
